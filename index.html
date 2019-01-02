@@ -1,0 +1,65 @@
+﻿<input id=input value="z=y/x*9">
+<br>
+<canvas id=a width=600 height=400>
+<script>
+c=a.getContext("2d");
+
+camX = 0;
+camY = 0;
+camZ = 0;
+proj = [];
+CamYaw=0;
+CamPitch=0.5;
+
+compute = function(){
+  code = Function(input.value);
+  a.width ^= 0;
+  for(x = -100; x < 100; x += 5){
+    proj[x] = [];
+    for(y = -100; y < 100; y += 5){
+      
+      X = x;
+      Z = y;
+      code()
+      Y = z;
+      
+      // apply camera position
+      X-=camX;
+      Y-=camY;
+      Z-=camZ;
+      
+      // apply camera rotation (yaw)
+      var p=Math.atan2(X,Z)-CamYaw
+      var d=Math.sqrt(X*X+Z*Z)
+      X=Math.sin(p)*d
+      Z=Math.cos(p)*d
+
+      // apply camera rotation (pitch)
+      var p=Math.atan2(Y,Z)-CamPitch
+      var d=Math.sqrt(Y*Y+Z*Z)
+      Y=Math.sin(p)*d
+      Z=Math.cos(p)*d
+      
+      Y-=50
+      Z+=200
+  
+      w=a.width/2;
+      h=a.height/2;
+      if(Z>0)proj[x][y] = [w+X/Z*w, h+Y/Z*w], c.fillRect(proj[x][y][0]-1, proj[x][y][1]-1,2,2);
+      
+      if(proj[x][y] && proj[x-5] && typeof proj[x][y-5] != "undefined" && typeof proj[x-5][y] != "undefined" && typeof proj[x-5][y-5] != "undefined"){
+        c.moveTo(proj[x][y][0], proj[x][y][1])
+        c.lineTo(proj[x][y-5][0], proj[x][y-5][1])
+        c.moveTo(proj[x][y][0], proj[x][y][1])
+        c.lineTo(proj[x-5][y][0], proj[x-5][y][1])
+      }
+    }
+  }
+  c.lineWidth = 1;
+  c.stroke();
+}
+setInterval(function(){
+  CamYaw += .01;
+  compute();
+}, 33);
+</script>

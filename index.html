@@ -1,7 +1,11 @@
-﻿<input id=input value="z=y/x*9">
+﻿<input id=input value="z=y/x*9" oninput="location.hash=btoa(value)">
 <br>
 <canvas id=a width=600 height=400>
 <script>
+if(location.hash){
+  input.value = atob(location.hash.slice(1));
+}
+
 c=a.getContext("2d");
 
 camX = 0;

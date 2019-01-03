@@ -13,12 +13,12 @@ setInterval(e=>{
       x = X * 5 - 90;
       y = Y * 5 - 90;
       eval(I.value);
-      p=Math.atan2(x,y)-w;
-      d=Math.sqrt(x*x+y*y);
+      p=Math.atan2(y,x)-w;
+      d=Math.hypot(y,x);
       x=Math.sin(p)*d;
       y=Math.cos(p)*d;
-      p=Math.atan2(z,y)-.5;
-      d=Math.sqrt(z*z+y*y);
+      p=Math.atan2(y,z)+1;
+      d=Math.hypot(y,z);
       z=Math.sin(p)*d;
       y=Math.cos(p)*d;
       y+=250;
